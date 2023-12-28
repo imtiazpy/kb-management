@@ -1,0 +1,62 @@
+{% load static %}
+
+<footer class="footer-area wow fadeIn" data-wow-delay=".2s">
+  <div class="container">
+    <div class="footer-up">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="logo">
+            <img src="{% static 'img/logo-white.png' %}" alt="fossil-logo">
+          </div>
+          <p>There are many variations of pase available but the majority have suffered alteration in some look even
+            slightly believable.</p>
+          <div class="social-area">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 com-sm-12">
+          <h5>Quick Browse</h5>
+          <ul>
+            <li>
+              <a href="{% url 'about' %}"> <i class="fa-solid fa-minus"></i> About Us</a>
+              <a href="{% url 'contact' %}"><i class="fa-solid fa-minus"></i> Contact Us</a>
+              <a href="{% url 'services' %}"><i class="fa-solid fa-minus"></i> Services</a>
+              <a href="price.html"><i class="fa-solid fa-minus"></i> Pricing Plan</a>
+              <a href="faq.html"><i class="fa-solid fa-minus"></i> FAQ</a>
+              <a href="contact.html"><i class="fa-solid fa-minus"></i> Support</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <h5>Our Services</h5>
+          <ul>
+            <li>
+              <a href="single-service.html"><i class="fa-solid fa-minus"></i> Solid Octane </a>
+              <a href="single-service.html"><i class="fa-solid fa-minus"></i> Pure Diesel</a>
+              <a href="single-service.html"><i class="fa-solid fa-minus"></i> Light Petrol</a>
+              <a href="single-service.html"><i class="fa-solid fa-minus"></i> CNG Gas</a>
+              <a href="single-service.html"><i class="fa-solid fa-minus"></i> Car Cleaning</a>
+              <a href="single-service.html"><i class="fa-solid fa-minus"></i> Electric Charging</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="footer-bottom">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <p class="copyright-line">© <span id="date"></span> Refuel All rights reserved.</p>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <p class="privacy"><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+      </div>
+    </div>
+  </div>
+</div>

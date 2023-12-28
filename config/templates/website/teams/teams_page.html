@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Our team
+{% endblock %}
+
+{% block content %}
+<div class="breadcroumb-area bread-bg" style="background-image: url({% static 'img/teams.jpg' %}); background-position: 100% 19.41%;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcroumb-title">
+          <h1>Team</h1>
+          <h6><a href="/">Home</a> <i class="fa-solid fa-dot-circle"></i>Team</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="team-area section-padding gray-bg text-center pb-150">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-12 ">
+        <div class="section-title text-center">
+          <h6>Team</h6>
+          <h2>Our Team Members</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row team-box">
+      {% for team in teams %}
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInLeft" data-wow-delay=".2s">
+          <div class="team-img-container">
+            <img src="{% static team.img_path %}" alt="{{ team.name }}">
+          </div>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">{{ team.name }}</a>
+            </div>
+            <div class="team-subtitle">
+              <p>{{ team.designation }}</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInLeft" data-wow-delay=".4s">
+          <img src="assets/img/team/2.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Lynne Richards</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInRight" data-wow-delay=".6s">
+          <img src="assets/img/team/3.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Mickey Salas</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInRight" data-wow-delay=".8s">
+          <img src="assets/img/team/4.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Anthony Hundley</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInLeft" data-wow-delay=".2s">
+          <img src="assets/img/team/1.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Edna Dinapoli</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInLeft" data-wow-delay=".4s">
+          <img src="assets/img/team/2.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Lynne Richards</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInRight" data-wow-delay=".6s">
+          <img src="assets/img/team/3.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Mickey Salas</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+        <div class="single-team-member wow fadeInRight" data-wow-delay=".8s">
+          <img src="assets/img/team/4.jpg" alt>
+          <div class="team-content">
+            <div class="team-title">
+              <a href="#">Anthony Hundley</a>
+            </div>
+            <div class="team-subtitle">
+              <p>Manager</p>
+            </div>
+          </div>
+          <div class="team-social">
+            <ul>
+              <li>
+                <a href="#"><i class="fab fa-facebook-f" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i> </a>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-behance" aria-hidden="true"></i> </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</div>
+{% endblock %}
