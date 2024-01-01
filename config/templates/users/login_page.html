@@ -1,0 +1,155 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" href="" type="image/x-icon">
+
+  <title>
+    Login
+  </title>
+
+  <meta name="description" content="Gas Station in Chattogram" />
+
+  {# Font Awesome #}
+  <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+
+  {# Stylesheets #}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+  <style>
+    body{
+      background-image:url('{% static "img/login.jpg" %}');
+      background-repeat:no-repeat;
+      background-size:cover;
+    }
+  </style> 
+
+</head>
+
+<body>
+  <div id="preloader">
+    <div class="loader">
+      <div class="loader-rect"></div>
+      <div class="loader-rect"></div>
+      <div class="loader-rect"></div>
+      <div class="loader-rect"></div>
+    </div>
+  </div>
+    <div class="d-flex py-5 g-5 h-100 justify-content-center align-items-center">
+      <div class="col-md-4 col-sm-6 col-12">
+        <div 
+          class="card card-default" 
+          style="
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+          "
+        >
+          <div class="card-header">
+            <h4 class="card-title text-white"><b>Login</b></h4>
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <form id="login-user" action="" method="POST">
+                {% csrf_token %}
+                <div class="mdc-layout-grid">
+                  <div class="mdc-layout-grid__inner">
+                    <div class="form-group mb-3">
+                      <label for="username" class="control-label text-white">Username</label>
+                      <input type="text" class="form-control rounded-0" autofocus name="username" id="username"
+                        required="required">
+                    </div>
+                    <div class="form-group mb-3">
+                      <label for="password" class="control-label text-white">Password</label>
+                      <input type="password" class="form-control rounded-0" autofocus name="password" id="password"
+                        required="required">
+                    </div>
+                    <div class="form-group mb-3">
+                      <div class="d-flex w-100 justify-content-center align-items-center">
+                        <button class="btn btn-sm rounded-0 btn-success py-2 px-4 rounded-lg">
+                          Login
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <a href="#top" class="go-top"><i class="fa-solid fa-level-up"></i></a>
+
+  {# JavaScript #}
+  <script data-cfasync="false" src="{% static 'js/email-decode.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/wow.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.counterup.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/magnific-popup.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.sticky.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.barfiller.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+
+
+  <script>
+    $(function () {
+      $('#login-user').submit(function (e) {
+        e.preventDefault();
+        const _this = $(this)
+        $('.err-msg').remove();
+        const el = $('<div>')
+        el.addClass("alert alert-danger err-msg")
+        el.hide()
+        if (_this[0].checkValidity() == false) {
+          _this[0].reportValidity();
+          return false;
+        }
+        $.ajax({
+          url: "{% url 'login_user' %}",
+          data: _this.serialize(),
+          method: 'POST',
+          dataType: 'json',
+          error: err => {
+            el.text("An error occurred.", err)
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          },
+          success: res => {
+            if (typeof res == 'object' && res.status == 'success') {
+              el.removeClass("alert alert-danger err-msg")
+              location.href = "{% url 'dashboard' %}"
+            } else if (res.status == 'failed' && !!res.msg) {
+              el.text(res.msg)
+            } else {
+              el.text("An error occured");
+            }
+            _this.prepend(el)
+            el.show('slow')
+            $("html, body, .modal").scrollTop(0);
+          }
+        })
+      })
+    })
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+#img-input {
+  display: none;
+}
+
+.profile-item {
+  color: #fff !important;
+}
+
+.profile-item > div {
+  background-color: rgb(32, 30, 30) !important;
+}
