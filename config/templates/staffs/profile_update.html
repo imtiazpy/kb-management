@@ -1,0 +1,131 @@
+{% extends "management_base.html" %}
+{% load static %}
+
+{% block title %}
+{{ staff.user.name }}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<section style="background-color: #9de2ff;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-8">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <form action="" id="profile-form" class="row text-black" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div id="avatar-container" class="flex-shrink-0 col-4 me-2">
+                <label for="img-input" class="img-label">
+                  <img src="{{ staff.user.avatar.url }}" alt="Generic placeholder image" class="img-fluid"
+                    style="width: 180px; border-radius: 10px;" id="avatar-img" />
+                </label>
+
+                <input type="file" id="img-input" name="avatar" accept="image/*">
+              </div>
+
+              <div class="flex-grow-1 col-8 ms-2">
+                <div class="form-group row">
+                  <label for="name" class="col-sm-3 col-form-label">Name:</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="name" class="form-control" id="name" value="{{ staff.user.name }}">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="phone" class="col-sm-3 col-form-label">Phone:</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="phone" class="form-control" id="phone" value="{{ staff.phone }}">
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="dob" class="col-sm-3 col-form-label">DOB:</label>
+                  <div class="col-sm-9">
+                    <input type="date" name="dob" class="form-control" id="dob" value="{{ staff.dob|date:'Y-m-d' }}">
+                  </div>
+                </div>
+
+                <div class="d-flex pt-1 justify-content-between">
+                  <button type="submit" class="btn btn-primary flex-grow-1">
+                    Save
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block extra_script %}
+<script>
+  $(function () {
+    $('#img-input').change(function () {
+      // Get the selected file
+      const file = this.files[0];
+
+      if (file) {
+        // Read the selected file as a Data URL
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          // Update the image source with the Data URL
+          $('#avatar-img').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    $('#profile-form').submit(function (e) {
+      e.preventDefault()
+      const _this = $(this)
+      const formData = new FormData(this);
+      const el = $('<div>')
+      el.addClass("alert alert-danger rounded-0 err-msg")
+      el.hide()
+      $('.err-msg').remove()
+      if (_this[0].checkValidity() == false) {
+        _this[0].reportValidity()
+        return false
+      }
+      $.ajax({
+        url: "{% url 'save_profile' %}",
+        method: 'POST',
+        data: formData,
+        dataType: 'json',
+        contentType: false,
+        processData: false,
+        error: err => {
+          el.text("An error occurred.", err)
+          _this.prepend(el)
+          el.show('slow')
+          $('html, body, modal').scrollTop(0)
+        },
+        success: function (res) {
+          if (res.status == 'success') {
+            window.location.href = 'http://127.0.0.1:8000/staff/profile/';
+          } else if (!!res.msg) {
+            el.html(res.msg)
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          } else {
+            el.html("An error occurred.")
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          }
+        }
+      })
+    })
+  })
+</script>
+{% endblock extra_script %}

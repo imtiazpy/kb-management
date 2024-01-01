@@ -60,11 +60,11 @@
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                     </li>
-                    {% if user.is_authenticated %}
+                    {% comment %} {% if user.is_authenticated %}
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'fuel_dashboard' %}">Fuel Dashboard</a>
                     </li>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                   </ul>
                 </div>
               </nav>
