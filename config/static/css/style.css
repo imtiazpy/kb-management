@@ -67,7 +67,7 @@ p {
 	font-weight: 400;
 	line-height: 28px;
 	position: relative;
-	color: #898a9c;
+	/* color: #898a9c; */
 }
 
 p.highlight {
