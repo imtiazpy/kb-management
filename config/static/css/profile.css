@@ -1,11 +1,17 @@
+#profile-section {
+  width: 100%;
+}
+
 #img-input {
   display: none;
 }
 
 .profile-item {
   color: #fff !important;
+  gap: 2px;
 }
 
 .profile-item > div {
   background-color: rgb(32, 30, 30) !important;
+  width: 10px !important;
 }

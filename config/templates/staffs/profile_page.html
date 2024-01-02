@@ -10,68 +10,66 @@
 
 {% block content %}
 
-<section style="background-color: #9de2ff;">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-8">
-        <div class="card" style="border-radius: 15px;">
+<section id="profile-section" style="background-color: #9de2ff;">
+  <div class="container-fluid py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col-10">
+        <div class="card w-100" style="border-radius: 15px; background-color: rgb(133, 130, 130);">
           <div class="card-body p-4">
-            <div class="row text-black">
-              <div class="flex-shrink-0 col-3 me-2">
+            <div class="row text-black w-100">
+              <div class="col-lg-3 col-md-12 me-2 mb-md-4">
                 <img src="{{ staff.user.avatar.url }}" alt="Generic placeholder image" class="img-fluid"
                   style="width: 180px; border-radius: 10px;" id="avatar-img" />
               </div>
-              <div class="flex-grow-1 col-9 ms-2">
+              <div class="col-lg-9 col-md-12 px-0 w-100">
                 <div style="background-color: rgb(166, 129, 201); border-radius: 10px; padding: 10px; margin-bottom: 10px; color: white;">
                   <h5 class="mb-1">{{ staff.user.name }}</h5>
                   <p class="mb-2 pb-1" style="color: #2b2a2a;">
                     {{ staff.designation }}
                   </p>
                 </div>
-                <div class="profile-item d-flex justify-content-between rounded-lg p-2 mb-2">
-                  <div style="padding: 5px 25px; border-radius: 10px; color: #fff;">
+                <div class="profile-item row rounded-lg py-2 px-3 mb-2">
+                  <div class="col-md-4 col-sm-6 col-12" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
                     <p class="small mb-1">
-                      <i class="fa-solid fa-phone"></i>
+                      <i class="fa-solid fa-phone"></i> Phone
                     </p>
                     <p class="mb-0">{{ staff.phone }}</p>
                   </div>
-                  <div class="px-3" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
+                  <div class="col-md-4 col-sm-6 col-12" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
                     <p class="small mb-1">
-                      <i class="fa-solid fa-cake-candles"></i>
+                      <i class="fa-solid fa-cake-candles"></i> Cake Day
                     </p>
                     <p class="mb-0">{{ staff.dob }}</p>
                   </div>
-                  <div style="padding: 5px 25px; border-radius: 10px; color: #fff;">
+                  <div class="col-md-4 col-sm-6 col-12" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
                     <p class="small mb-1">
-                      <i class="fa-solid fa-sack-dollar"></i>
+                      <i class="fa-solid fa-sack-dollar"></i> Salary
                     </p>
                     <p class="mb-0">{{ staff.salary }}</p>
                   </div>
                 </div>
-                <div class="profile-item d-flex justify-content-between rounded-lg p-2 mb-2">
-                  <div style="padding: 5px 25px; border-radius: 10px; color: #fff;">
+                <div class="profile-item row rounded-lg py-2 px-3 mb-2">
+                  <div class="col-md-4 col-sm-6 col-12" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
                     <p class="small mb-1">
-                      <i class="fa-solid fa-id-card"></i>
+                      <i class="fa-solid fa-id-card"></i> NID
                     </p>
                     <p class="mb-0">{{ staff.nid }}</p>
                   </div>
-                  <div style="padding: 5px 25px; border-radius: 10px; color: #fff;">
+                  <div class="col-md-4 col-sm-6 col-12" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
                     <p class="small mb-1">
-                      <i class="fa-solid fa-location-dot"></i>
+                      <i class="fa-solid fa-location-dot"></i> Address
                     </p>
                     <p class="mb-0">{{ staff.address }}</p>
                   </div>
-                  <div style="padding: 5px 25px; border-radius: 10px; color: #fff;">
+                  <div class="col-md-4 col-sm-6 col-12" style="padding: 5px 25px; border-radius: 10px; color: #fff;">
                     <p class="small mb-1">
-                      Joining Date
+                      <i class="fa-solid fa-calendar-days"></i> Joining Date
                     </p>
                     <p class="mb-0">{{ staff.joining_date }}</p>
                   </div>
                 </div>
                 <div class="d-flex pt-1 justify-content-between">
-                  <button id="update-btn" type="button" class="btn btn-primary flex-grow-1">
-                    <a href="{% url 'update_profile' %}?mode=edit">Update Profile</a>
-                  </button>
+                  <a class="btn btn-success d-block w-100" href="{% url 'update_profile' %}?mode=edit">Update Profile</a>
                 </div>
               </div>
             </div>
