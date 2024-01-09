@@ -1,17 +1,28 @@
-#profile-section {
+/* #profile-section {
   width: 100%;
-}
+} */
 
 #img-input {
   display: none;
 }
 
+#avatar-img-upload:hover {
+  cursor: pointer;
+}
+
 .profile-item {
   color: #fff !important;
-  gap: 2px;
+  gap: 4px;
 }
 
 .profile-item > div {
   background-color: rgb(32, 30, 30) !important;
-  width: 10px !important;
+  /* width: fit-content !important; */
+  padding: 5px 25px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+#avatar-container:hover {
+  cursor: pointer;
 }
