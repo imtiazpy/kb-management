@@ -1,0 +1,67 @@
+{% extends "management_base.html" %}
+
+{% load humanize %}
+
+{% block title %}
+Main Dashboard
+{% endblock %}
+
+{% block content %}
+<section class="">
+  <div class="row justify-content-start">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-primary fa-solid fa-th-list" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{total_fuel_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fuel Type</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% for fuel in fuels %}
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-muted fa fa-gas-pump" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{fuel.available|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Available {{fuel}} L</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-warning fa fa-coins" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{total_sale|floatformat:2|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Sale</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

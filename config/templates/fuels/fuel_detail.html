@@ -1,0 +1,24 @@
+<style>
+  #global_modal .modal-footer {
+    display: none;
+  }
+</style>
+<div class="container-fluid">
+  <dl>
+    <dt class="text-muted">Fuel Type Name</dt>
+    <dd class="ps-4">{{fuel.name}}</dd>
+    <dt class="text-muted">Description</dt>
+    <dd class="ps-4">{{fuel.description}}</dd>
+    <dt class="text-muted">Price <small><em>per Liter</em></small></dt>
+    <dd class="ps-4">{{fuel.price}}</dd>
+    <dt class="text-muted">Status</dt>
+    <dd class="ps-4 mt-2">
+      {% if fuel.status == '1' %}
+        <span class="badge bg-primary px-3 rounded-pill bg-success py-2">Active</span> 
+      {% else %}
+        <span class="badge bg-default border text-white px-3 py-2 rounded-pill bg-danger">Inactive</span> 
+      {% endif %}
+    </dd>
+  </dl>
+  <div class="clear-fix mb-3"></div>
+</div>

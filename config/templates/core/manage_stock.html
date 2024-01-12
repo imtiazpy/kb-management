@@ -1,0 +1,112 @@
+<style>
+  span.selection {
+    display: block;
+  }
+
+  span.select2-dropdown {
+    border: 1px solid #444;
+  }
+  
+  .select2-results>.select2-results__options {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<div class="container-fluid">
+  <form action="" id="stock-form">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{stock.id}}">
+    <input type="hidden" name="created_by" value="{{ user }}">
+    <input type="hidden" name="unit" value="{{ unit }}">
+    <div class="form-group mb-3">
+      <label for="date" class="control-label">Date Added</label>
+      <input type="date" id="date" name="stock_in" value="{{stock.stock_in|date:'Y-m-d'}}" required
+        class="form-control form-control-sm rounded-0">
+    </div>
+    <div class="form-group mb-3">
+      <label for="product" class="control-label">{{ product_type }}</label>
+      <select name="product" id="product" class="form-select form-select-sm rounded-0 border border-danger" required="required">
+        {% if not stock.product %}
+        <option value="" disabled selected></option>
+        {% else %}
+        <option value="" disabled></option>
+        {% endif %}
+        {% for product in products %}
+          {% if stock.product.id == product.id %}
+          <option value="{{product.id}}" selected>{{product.name}}</option>
+          {% else %}
+          <option value="{{product.id}}">{{product.name}}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+    
+    <div class="form-group mb-3">
+      <label for="volume" class="control-label">Volume <small><em>({{unit}})</em></small></label>
+      <input step="any" type="number" id="volume" name="volume" value="{{stock.volume}}" required
+        class="form-control form-control-sm rounded-0 text-end">
+    </div>
+  </form>
+</div>
+<script>
+  $(function () {
+    $('#product').select2({
+      placeholder: "Please select here",
+      allowClear: true,
+      width: '100%',
+      dropdownParent: $('#global-modal')
+    })
+    $('#stock-form').submit(function (e) {
+      e.preventDefault()
+      const _this = $(this)
+      const el = $('<div>')
+      el.addClass("alert alert-danger rounded-0 err-msg")
+      el.hide()
+      $('.err-msg').remove()
+      if (_this[0].checkValidity() == false) {
+        _this[0].reportValidity()
+        return false
+      }
+
+      const volInput = _this.find('[name="volume"]');
+      const volValue = parseFloat(volInput.val());
+
+      if (isNaN(volValue) || volValue <= 0) {
+        el.text("Invalid volume. Please enter a value greater than 0.");
+        _this.prepend(el);
+        el.show('slow');
+        $('html, body, modal').scrollTop(0);
+        return;
+      }
+
+      $.ajax({
+        url: "{% url 'save_stock' %}",
+        method: 'POST',
+        data: _this.serialize(),
+        dataType: 'json',
+        error: err => {
+          el.text("An error occurred.", err)
+          _this.prepend(el)
+          el.show('slow')
+          $('html, body, modal').scrollTop(0)
+        },
+        success: function (res) {
+          if (res.status == 'success') {
+            location.reload()
+          } else if (!!res.msg) {
+            el.html(res.msg)
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          } else {
+            el.html("An error occurred.")
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          }
+        }
+      })
+    })
+  })
+</script>

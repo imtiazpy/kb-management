@@ -1,0 +1,19 @@
+<style>
+  #global-modal .modal-footer{
+      display: none;
+  }
+</style>
+<div class="container-fluid">
+  <dl>
+    <dt class="text-muted">Product</dt>
+    <dd class="ps-4">{{stock.product}}</dd>
+    <dt class="text-muted">Volume</dt>
+    <dd class="ps-4">{{stock.volume}} {{stock.unit}}</dd>
+    <dt class="text-muted">Stock-in Date</dt>
+    <dd class="ps-4">{{stock.date|date:"F d, Y"}}</dd>
+  </dl>
+  <div class="clear-fix mb-3"></div>
+  <div class="text-end">
+    <button class="btn btn-danger border btn-sm rounded-0" type="button" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+  </div>
+</div>

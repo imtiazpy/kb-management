@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('website.urls')),
     path('users/', include('users.urls')),
     path('staff/', include('staffs.urls')),
+    path('fuel-dash/', include('fuel.urls')),
 ]
 
 if settings.DEBUG == True:

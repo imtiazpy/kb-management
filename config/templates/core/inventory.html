@@ -1,0 +1,57 @@
+{% extends "management_base.html" %}
+
+{% load humanize %}
+
+{% block title %}
+Inventory
+{% endblock %}
+
+{% block content %}
+<h3 class="fw-bolder">Inventory</h3>
+<hr>
+<section class="py-3">
+  <div class="container">
+    <div class="card rounded-0 shadow-sm blur">
+      <div class="card-body">
+        <div class="container-fluid">
+          <table class="table table-stripped table-bordered" id="fuel-table">
+            <colgroup>
+              <col width="15%">
+              <col width="50%">
+              <col width="35%">
+            </colgroup>
+            <thead>
+              <tr class="bg-primary bg-gradient text-light">
+                <th class="text-center">#</th>
+                <th class="text-center">Petrol</th>
+                <th class="text-center">Available</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in products %}
+              <tr>
+                <td class="text-center">{{forloop.counter}}</td>
+                <td class="">{{product}}</td>
+                <td class="text-end">{{ product.available|floatformat:2|intcomma }}/L</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+{% block extra_script %}
+<script>
+  $(function() {
+    $('#fuel-table').dataTable({
+      "scrollX": true,
+      "scrollY": "200px",
+      "autoWidth": false,
+    })
+  })
+</script>
+{% endblock extra_script %}
