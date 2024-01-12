@@ -8,7 +8,7 @@ def login_page_view(request):
 
 
 def login_view(request):
-    logout()
+    logout(request)
     resp = {"status": 'failed', 'msg': ''}
     if request.POST:
         username = request.POST['username']

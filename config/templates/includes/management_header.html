@@ -21,7 +21,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto" id="topNav">
-                    {% comment %} <li class="nav-item">
+                    <li class="nav-item">
                       <a class="nav-link" href="{% url 'fuel_dashboard' %}">Dash-Home</a>
                     </li>
                     <li class="nav-item">
@@ -29,11 +29,11 @@
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'fuel_stock' %}">Stock</a>
-                    </li> {% endcomment %}
-                    {% comment %} <li class="nav-item">
-                      <a class="nav-link" href="{% url 'inventory' %}">Inventory</a>
                     </li>
                     <li class="nav-item">
+                      <a class="nav-link" href="{% url 'inventory' category='FUEL' %}">Inventory</a>
+                    </li>
+                    {% comment %} <li class="nav-item">
                       <a class="nav-link" href="{% url 'sales' %}">Sales</a>
                     </li>
                     <li class="nav-item">

@@ -134,7 +134,7 @@
           success: res => {
             if (typeof res == 'object' && res.status == 'success') {
               el.removeClass("alert alert-danger err-msg")
-              location.href = "{% url 'dashboard' %}"
+              location.href = "{% url 'fuel_dashboard' %}"
             } else if (res.status == 'failed' && !!res.msg) {
               el.text(res.msg)
             } else {
