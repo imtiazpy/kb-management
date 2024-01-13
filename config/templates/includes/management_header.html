@@ -33,10 +33,10 @@
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'inventory' category='FUEL' %}">Inventory</a>
                     </li>
-                    {% comment %} <li class="nav-item">
+                    <li class="nav-item">
                       <a class="nav-link" href="{% url 'sales' %}">Sales</a>
                     </li>
-                    <li class="nav-item">
+                    {% comment %} <li class="nav-item">
                       <a class="nav-link" href="{% if request.user.is_staff %}{% url 'sales_report_admin' %}{% else %}{% url 'sales_report_page' %}{% endif %}">Salse Report</a>
                     </li> {% endcomment %}
                     <li class="nav-item">

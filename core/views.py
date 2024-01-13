@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import Stock, Product
-from core.forms import SaveStockForm
+from .models import Stock, Product, Sale, Customer
+from core.forms import SaveStockForm, SaveSaleForm
 
 
 class StockListView(LoginRequiredMixin, generic.ListView):
@@ -111,3 +111,61 @@ class InventoryView(LoginRequiredMixin, generic.View):
     def get(self, request, category=None):
         products = Product.objects.filter(category=category, status=1)
         return render(request, 'core/inventory.html', {'products': products})
+
+
+
+class SalesListView(LoginRequiredMixin, generic.ListView):
+    model = Sale
+    template_name = 'core/sales_list.html'
+    context_object_name = 'sales'
+
+    def get_queryset(self):
+        category = self.kwargs.get('category', '')
+        if self.request.user.is_staff:
+            return Sale.objects.filter(product__status=1, product__category=category)
+        else:
+            return Sale.objects.filter(created_by=self.request.user, product__status=1, product__category=category)
+
+
+
+class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
+
+    def get(self, request, pk=None, category=None):
+        context = {}
+        if pk is not None:
+            context['sale'] = Sale.objects.get(id=pk)
+        context['products'] = Product.objects.filter(status=1, category=category)
+        context['customers'] = Customer.objects.all()
+        context['user'] = request.user.id
+
+        return render(request, 'core/manage_sale.html', context)
+
+    def post(self, request):
+        res = {'status': 'failed', 'msg': ''}
+
+        if request.method != 'POST':
+            res['msg'] = 'No data send on this request'
+        
+        else:
+            post = request.POST
+
+            if post['id'] != '':
+                sale = Sale.objects.get(id = post['id'])
+                form = SaveSaleForm(request.POST, instance=sale)
+            else:
+                form = SaveSaleForm(request.POST)
+            
+            if form.is_valid():
+                form.save()
+                if post['id'] == '':
+                    messages.success(request, "Sale Record has been added successfully")
+                else:
+                    messages.success(request, "Sale Record has been updated successfully")
+                res['status'] = 'success'
+            else:
+                for field in form:
+                    for error in field.errors:
+                        if not res['msg'] == '':
+                            res['msg'] += str('<br />')
+                        res['msg'] += str(f"[{field.label}] {error}")
+        return JsonResponse(res)
