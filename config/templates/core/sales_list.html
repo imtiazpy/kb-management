@@ -44,9 +44,9 @@ Sales
               {% for sale in sales %}
               <tr>
                 <td class="text-center">{{forloop.counter}}</td>
-                <td class="">{{ sale.date|date:"M d, Y" }}</td>
-                <td class="">{{sale.customer_name}}</td>
-                <td class="">{{sale.fuel}}</td>
+                <td class="">{{ sale.sale_date|date:"M d, Y" }}</td>
+                <td class="">{{sale.customer}}</td>
+                <td class="">{{sale.product}}</td>
                 <td class="text-end">{{ sale.volume|floatformat:2|intcomma }} L</td>
                 <td class="text-end">{{ sale.total_amount|floatformat:2|intcomma }}</td>
                 <td class="text-center">
@@ -61,7 +61,7 @@ Sales
                       <a class="dropdown-item edit-data text-success" href="javascript:void(0)" data-url="{% url 'manage_sale_edit' sale.pk %}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
                       </a>
-                      <a class="dropdown-item delete-data text-danger" href="javascript:void(0)" data-url="{% url 'delete_sale' sale.pk %}">
+                      <a class="dropdown-item delete-data text-danger" href="javascript:void(0)" data-url="{% url 'delete_sale' pk=sale.pk category='FUEL' %}">
                         <i class="fa-solid fa-trash"></i> Delete
                       </a>
                     </div>

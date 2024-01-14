@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Stock, Sale
+from .models import Product, Stock, Sale, Customer
 
 
 class SaveProductForm(forms.ModelForm):
@@ -55,7 +55,7 @@ class SaveStockForm(forms.ModelForm):
 class SaveSaleForm(forms.ModelForm):
     class Meta:
         model = Sale
-        fields = ('product', 'volume', 'customer', 'total_amount', 'sale_date', 'created_by')
+        fields = ('product', 'volume', 'customer', 'price', 'total_amount', 'sale_date', 'created_by')
 
     def clean_product(self):
         product_id = self.data.get('product')
@@ -78,3 +78,9 @@ class SaveSaleForm(forms.ModelForm):
         else:
             raise forms.ValidationError(
                 f"Fuel volume exceeds the limit. Available fuel - {fuel_vol} L")
+
+
+class SaveCustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = "__all__"

@@ -1,12 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .models import Stock, Product, Sale, Customer
-from core.forms import SaveStockForm, SaveSaleForm
+from core.forms import SaveStockForm, SaveSaleForm, SaveCustomerForm
 
 
 class StockListView(LoginRequiredMixin, generic.ListView):
@@ -113,7 +115,6 @@ class InventoryView(LoginRequiredMixin, generic.View):
         return render(request, 'core/inventory.html', {'products': products})
 
 
-
 class SalesListView(LoginRequiredMixin, generic.ListView):
     model = Sale
     template_name = 'core/sales_list.html'
@@ -127,14 +128,14 @@ class SalesListView(LoginRequiredMixin, generic.ListView):
             return Sale.objects.filter(created_by=self.request.user, product__status=1, product__category=category)
 
 
-
 class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
 
     def get(self, request, pk=None, category=None):
         context = {}
         if pk is not None:
             context['sale'] = Sale.objects.get(id=pk)
-        context['products'] = Product.objects.filter(status=1, category=category)
+        context['products'] = Product.objects.filter(
+            status=1, category=category)
         context['customers'] = Customer.objects.all()
         context['user'] = request.user.id
 
@@ -145,22 +146,23 @@ class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
 
         if request.method != 'POST':
             res['msg'] = 'No data send on this request'
-        
         else:
             post = request.POST
-
+            print("============post============", post)
             if post['id'] != '':
-                sale = Sale.objects.get(id = post['id'])
+                sale = Sale.objects.get(id=post['id'])
                 form = SaveSaleForm(request.POST, instance=sale)
             else:
                 form = SaveSaleForm(request.POST)
-            
+
             if form.is_valid():
                 form.save()
                 if post['id'] == '':
-                    messages.success(request, "Sale Record has been added successfully")
+                    messages.success(
+                        request, "Sale Record has been added successfully")
                 else:
-                    messages.success(request, "Sale Record has been updated successfully")
+                    messages.success(
+                        request, "Sale Record has been updated successfully")
                 res['status'] = 'success'
             else:
                 for field in form:
@@ -169,3 +171,56 @@ class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
                             res['msg'] += str('<br />')
                         res['msg'] += str(f"[{field.label}] {error}")
         return JsonResponse(res)
+
+
+class SalesDetailView(LoginRequiredMixin, generic.DetailView):
+    """Stock detail view for all the product category"""
+    model = Sale
+    template_name = 'core/sale_detail.html'
+    context_object_name = 'sale'
+    pk_url_kwarg = 'pk'
+
+    def get_object(self, queryset=None):
+        category = self.kwargs.get('category', '')
+        sale = Sale.objects.filter(product__category=category).first()
+
+        if not sale:
+            # Handle the case where no matching sale is found (e.g., return a 404)
+            raise Http404("Sale not found for the specified category")
+
+        return sale
+        
+
+
+@login_required
+def sales_delete_view(request, pk=None, category=None):
+    res = {'status': '', 'msg': ''}
+    if pk is None:
+        res['msg'] = "Invalid Sale ID"
+
+    else:
+        sale_instance = get_object_or_404(Sale, pk=pk, product__category=category)
+        try:
+            sale_instance.delete()
+            res['status'] = 'success'
+            messages.success(request, "Sale has been deleted successfully")
+        except Exception as e:
+            res['msg'] = f"Error deleting Sale: {str(e)}"
+
+    return JsonResponse(res)
+
+
+class CustomerCreatePageView(LoginRequiredMixin, generic.View):
+    template_name = 'core/customer.html'
+
+    def get(self, request):
+        form = SaveCustomerForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = SaveCustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('sales')
+        else:
+            return render(request, self.template_name, {'form': form})
