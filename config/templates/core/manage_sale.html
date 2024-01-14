@@ -1,0 +1,194 @@
+{% load humanize %}
+
+<style>
+  span.selection {
+    display: block;
+  }
+
+  span.select2-dropdown {
+    border: 1px solid #444;
+  }
+  
+  .select2-results>.select2-results__options {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<div class="container-fluid">
+  <form action="" id="sale-form">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{sale.id}}">
+    <input type="hidden" name="price" value="{% if sale.price %}{{sale.price}}{% else %}0{% endif %}">
+    <input type="hidden" name="created_by" value="{{ user }}">
+
+    <div class="form-group mb-3">
+      <label for="date" class="control-label">Date Added</label>
+      <input type="date" id="date" name="sale_date"
+        value="{% if sale.sale_date %}{{sale.sale_date|date:'Y-m-d'}}{% else %}{% now 'Y-m-d' %}{% endif %}" required
+        class="form-control form-control-sm rounded-0">
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="customer" class="control-label">Customer</label>
+      {% if customers %}
+      <select name="customer" id="customer" class="form-select form-select-sm rounded-0" required="required">
+        {% if not sale.customer %}
+        <option value="" disabled selected></option>
+        {% else %}
+        <option value="" disabled></option>
+        {% endif %}
+        {% for customer in customers %}
+        {% if sale.customer.id == customer.id %}
+        <option value="{{customer.id}}" selected>{{customer.name}}</option>
+        {% else %}
+        <option value="{{customer.id}}">{{customer.name}}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+      {% else %}
+      <a href="{% url 'customer_page' %}">Create A Customer</a>
+      {% endif %}
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="product" class="control-label">Product Type</label>
+      <select name="product" id="product" class="form-select form-select-sm rounded-0" required="required">
+        {% if not sale.product %}
+        <option value="" disabled selected></option>
+        {% else %}
+        <option value="" disabled></option>
+        {% endif %}
+        {% for product in products %}
+        {% if sale.product.id == product.id %}
+        <option value="{{product.id}}" data-price="{{product.price}}" selected>{{product.name}}</option>
+        {% else %}
+        <option value="{{product.id}}" data-price="{{product.price}}">{{product.name}}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="volume" class="control-label">
+        Price: <span class="fs-bolder" id="price">
+          {% if sale.price %}{{sale.price|floatformat:2|intcomma}}{% else %}0.00{% endif %}
+        </span>
+      </label>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="volume" class="control-label">Fuel Volume <small><em>(Liter)</em></small></label>
+      <input step="any" min="0" type="number" id="volume" name="volume"
+        value="{% if sale.volume %}{{sale.volume|floatformat:2|intcomma}}{% else %}0{% endif %}" required
+        class="form-control form-control-sm rounded-0 text-end">
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="total-amount" class="control-label">Total Amount</label>
+      <input step="any" type="number" id="total-amount" name="total_amount"
+        value="{% if sale.total_amount %}{{sale.total_amount|floatformat:2}}{% else %}0{% endif %}" required
+        class="form-control form-control-sm rounded-0 text-end">
+    </div>
+  </form>
+</div>
+
+
+
+<script>
+  $(function () {
+    $('#customer').select2({
+      placeholder: "Please select here",
+      allowClear: true,
+      width: '100%',
+      dropdownParent: $('#global-modal')
+    })
+    $('#product').select2({
+      placeholder: "Please select here",
+      allowClear: true,
+      width: '100%',
+      dropdownParent: $('#global-modal')
+    })
+    $('#product').change(function () {
+      const fuel_id = $(this).val()
+      const price = $(this).find("option[value='" + fuel_id + "']").attr('data-price') || 0
+      $('[name="price"]').val(price)
+      $('#price').text(parseFloat(price).toLocaleString('en-US', {
+        style: 'decimal',
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2
+      }))
+      if ($('#volume').val() > 0) {
+        $('#volume').trigger('input')
+      } else if ($('#total-amount').val() > 0) {
+        $('#total-amount').trigger('input')
+      }
+    })
+    $('#volume').on('input', function () {
+      let volume = $('#volume').val()
+      volume = volume > 0 ? volume : 0;
+      let price = $('[name="price"]').val()
+      price = price > 0 ? price : 0;
+      const total_amount = parseFloat(volume) * parseFloat(price)
+      $('[name="total_amount"]').val(parseFloat(total_amount).toFixed(2))
+    })
+    $('#total-amount').on('input', function () {
+      let total_amount = $('#total-amount').val()
+      total_amount = total_amount > 0 ? total_amount : 0;
+      let price = $('[name="price"]').val()
+      price = price > 0 ? price : 0;
+      const volume = parseFloat(total_amount) / parseFloat(price)
+      $('[name="volume"]').val(parseFloat(volume).toFixed(2))
+    })
+    $('#sale-form').submit(function (e) {
+      e.preventDefault()
+      const _this = $(this)
+      const el = $('<div>')
+      el.addClass("alert alert-danger rounded-0 err-msg")
+      el.hide()
+      $('.err-msg').remove()
+      if (_this[0].checkValidity() == false) {
+        _this[0].reportValidity()
+        return false
+      }
+
+      const volume = parseFloat($('#volume').val());
+
+      if (volume <= 0) {
+        el.text("Volume must be greater than 0.");
+        _this.prepend(el);
+        el.show('slow');
+        $('html, body, modal').scrollTop(0);
+        return false;
+      }
+
+      $.ajax({
+        url: "{% url 'save_sale' %}",
+        method: 'POST',
+        data: _this.serialize(),
+        dataType: 'json',
+        error: err => {
+          el.text("An error occurred.")
+          _this.prepend(el)
+          el.show('slow')
+          $('html, body, modal').scrollTop(0)
+        },
+        success: function (resp) {
+          if (resp.status == 'success') {
+            location.reload()
+          } else if (!!resp.msg) {
+            el.html(resp.msg)
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          } else {
+            el.html("An error occurred.")
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          }
+        }
+      })
+    })
+  })
+</script>

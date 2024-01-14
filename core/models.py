@@ -68,7 +68,7 @@ class Sale(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, related_name='sales')
     volume = models.FloatField(max_length=(15, 2), default=0)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name='customer_sales')
-    # price = models.FloatField(max_length=(15, 2), default=0)
+    price = models.FloatField(max_length=(15, 2), default=0)
     total_amount = models.FloatField(max_length=(15, 2), default=0)
     sale_date = models.DateField(null=True, blank=True)
     created_by = models.ForeignKey(USER, on_delete=models.SET_NULL, null=True, related_name='user_sales')
