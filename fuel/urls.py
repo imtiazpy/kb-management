@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import Dashboard, FuelListView, FuelCreateUpdateView, FuelDetailView, fuel_delete_view
-from core.views import StockListView, StockCreateUpdateView, StockDetailView, stock_delete_view, InventoryView, SalesListView, SalesCreateUpdateView, SalesDetailView, sales_delete_view
+from core.views import StockListView, StockCreateUpdateView, StockDetailView, stock_delete_view, InventoryView, SalesListView, SalesCreateUpdateView, SalesDetailView, sales_delete_view, SalesReportView, SalesReportAdminView
 
 urlpatterns = [
   path('', Dashboard.as_view(), name='fuel_dashboard'),
@@ -27,4 +27,8 @@ urlpatterns = [
   path('sales/save/', SalesCreateUpdateView.as_view(), name='save_sale'),
   path('sales/detail/<int:pk>/', SalesDetailView.as_view(), {'category': 'FUEL'}, name='sale_detail'),
   path('sales/delete/<int:pk>/<category>/', sales_delete_view, name='delete_sale'),
+
+  path('sales/report/', SalesReportView.as_view(), {'category': 'FUEL'}, name='sales_report_page'),
+  path('sales/report/<str:report_date>/', SalesReportView.as_view(), {'category': 'FUEL'}, name='sales_report'),
+  path('sales/admin/report/', SalesReportAdminView.as_view(), {'category': 'FUEL'}, name='sales_report_admin'),
 ]
