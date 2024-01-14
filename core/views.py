@@ -148,7 +148,6 @@ class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
             res['msg'] = 'No data send on this request'
         else:
             post = request.POST
-            print("============post============", post)
             if post['id'] != '':
                 sale = Sale.objects.get(id=post['id'])
                 form = SaveSaleForm(request.POST, instance=sale)
@@ -185,7 +184,6 @@ class SalesDetailView(LoginRequiredMixin, generic.DetailView):
         sale = Sale.objects.filter(product__category=category).first()
 
         if not sale:
-            # Handle the case where no matching sale is found (e.g., return a 404)
             raise Http404("Sale not found for the specified category")
 
         return sale
