@@ -1,6 +1,6 @@
 from django import forms
 from users.models import User
-from staffs.models import Staff
+from staffs.models import Staff, Attendance
 
 
 class SaveProfileForm(forms.ModelForm):
@@ -45,4 +45,10 @@ class SaveProfileForm(forms.ModelForm):
             user.user_staff.save()
 
         return user
+    
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = "__all__"
 

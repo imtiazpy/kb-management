@@ -18,8 +18,15 @@
           <div class="card-body">
             <div class="row text-black">
               <div class="col-lg-3 col-md-12 mb-4">
-                <img src="{{ staff.user.avatar.url }}" alt="Generic placeholder image" class="img-fluid"
+                <div class="d-flex flex-column">
+                  <img src="{{ staff.user.avatar.url }}" alt="Generic placeholder image" class="img-fluid"
                   style="width: 180px; border-radius: 10px;" id="avatar-img" />
+                  {% if today_attendance %}
+                  <p class="px-5 py-2 bg-success mt-4 text-white">Attendance Done</p>
+                  {% else %}
+                  <a class="text-white btn btn-success mt-4" href="{% url 'attendance' %}">Attendance</a>
+                  {% endif %}
+                </div>
               </div>
               <div class="col-lg-9 col-md-12 pe-4" >
                 <div style="background-color: rgb(166, 129, 201); border-radius: 10px; padding: 10px; margin-bottom: 10px; color: white;">

@@ -39,3 +39,13 @@ class Staff(models.Model):
 
     def __str__(self):
         return f"{self.user.username}-designation: {self.designation}"
+
+
+
+class Attendance(models.Model):
+    user = models.ForeignKey(USER, on_delete=models.CASCADE, related_name='user_attendance')
+    date = models.DateTimeField(auto_now=True)
+    is_present = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.user.name} - {self.date}'
