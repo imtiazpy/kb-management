@@ -78,4 +78,4 @@ class Sale(models.Model):
         verbose_name_plural = "Sales"
 
     def __str__(self):
-        return f"{self.customer}-[{self.product}-{self.volume} L]"
+        return f"{self.id}-{self.customer}-[{self.product}-{self.volume} L]"

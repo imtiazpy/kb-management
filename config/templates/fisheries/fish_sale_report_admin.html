@@ -1,0 +1,192 @@
+{% extends "management_base.html" %}
+
+{% load humanize static %}
+{% load customfilter %}
+
+{% block title %}
+Sales
+{% endblock %}
+
+
+{% block extra_css %}
+<style>
+  span.selection {
+    display: block;
+  }
+
+  span.select2-dropdown {
+    border: 1px solid #444;
+  }
+
+  .select2-results>.select2-results__options {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .c-relative {
+    position: relative;
+  }
+
+  #clearDateBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<h3 class="fw-bolder">Sales Report</h3>
+<hr>
+<section class="py-3">
+  <div class="container">
+    <div class="card rounded-0 shadow-sm blur">
+      <div class="card-body">
+        <div class="container-fluid">
+          <div class="row w-100 mb-3">
+            <div class="col-auto flex-shrink-1 flex-grow-1">
+              <form class="row" method="GET" action="{% url 'fish_sales_report_admin' %}" id="filter-form">
+                <div class="c-relative col-auto flex-shrink-1 flex-grow-1 mb-0">
+                  <input type="date" name="sale_date" class="form-control form-control-sm rounded-0" id="rep_date"
+                    value="{{selected_date}}">
+                  <button type="button" id="clearDateBtn" class="close btn btn-danger" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                {% if users %}
+                <div class="col-auto flex-shrink-1 flex-grow-1">
+                  <div class="form-group mb-0">
+                    <select name="user" id="user" class="form-select form-select-sm rounded-0" required="required">
+                      {% for user in users %}
+                        <option value="{{user.id}}" {% if user.id == selected_user %}selected{% endif %}>
+                          {{user.name}}
+                        </option>
+                      {% endfor %}
+                      <option value="all" {% if selected_user == 'all' %}selected{% endif %}>All</option>
+                      <option value="all" {% if selected_user == None %}selected{% endif %}>---</option>
+                    </select>
+                  </div>
+                </div>
+                {% endif %}
+                <div class="col-auto flex-shrink-1 flex-grow-1 mb-3">
+                  <button type="button" class="btn btn-success btn-sm rounded-md d-flex align-items-center" id="filter">
+                    <i class="fa-solid fa-sort mr-1"></i> Filter
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="col-auto">
+              <a href="javascript:void(0)" id="print" class="btn btn-success border btn-sm rounded-0 bg-gradient"><i
+                  class="fa fa-print"></i> Print Report</a>
+            </div>
+          </div>
+          <table class="table table-stripped table-bordered" id="report-table">
+            <colgroup>
+              <col width="5%">
+              <col width="15%">
+              <col width="20%">
+              <col width="20%">
+              <col width="10%">
+              <col width="10%">
+              <col width="10%">
+              <col width="10%">
+            </colgroup>
+            <thead>
+              <tr class="bg-primary bg-gradient text-light">
+                <th class="text-center px-2 py-1 align-middle">#</th>
+                <th class="text-center px-2 py-1 align-middle">Date</th>
+                <th class="text-center px-2 py-1 align-middle">Customer</th>
+                <th class="text-center px-2 py-1 align-middle">Petrol</th>
+                <th class="text-center px-2 py-1 align-middle">Price</th>
+                <th class="text-center px-2 py-1 align-middle">Volume</th>
+                <th class="text-center px-2 py-1 align-middle">Manager</th>
+                <th class="text-center px-2 py-1 align-middle">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sale in sales %}
+              <tr>
+                <td class="text-center px-2 py-1 align-middle">{{forloop.counter}}</td>
+                <td class=" px-2 py-1 align-middle">{{ sale.sale_date|date:"M d, Y" }}</td>
+                <td class=" px-2 py-1 align-middle">{{sale.customer}}</td>
+                <td class="px-2 py-1 align-middle">{{sale.product}}</td>
+                <td class="text-end px-2 py-1 align-middle">{{ sale.price|floatformat:2|intcomma }} </td>
+                <td class="text-end px-2 py-1 align-middle">{{ sale.volume|floatformat:2|intcomma }} L</td>
+                <td class="text-end px-2 py-1 align-middle">{{ sale.created_by }}</td>
+                <td class="text-end px-2 py-1 align-middle">{{ sale.total_amount|floatformat:2|intcomma }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="6" class="text-center">Total Sale of ({{selected_date}}) by ({{ selected_user_name }})</th>
+                <th class="text-end fs-bolder">{{total_sale|floatformat:2|intcomma}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<noscript id="print-header">
+  <div class="lh-1">
+    <h5 class="text-center">Khan Brothers CNG</h5>
+    <h3 class="text-center">Sales Daily Report</h3>
+    <div class="text-center">as of</div>
+    <h5 class="text-center">{{report_date|date:"F d, Y"}}</h5>
+    <hr>
+  </div>
+</noscript>
+
+{% endblock content %}
+
+
+{% block extra_script %}
+<script>
+  $(function () {
+    $('#user').select2({
+      placeholder: "Please select here",
+      allowClear: true,
+      width: '100%',
+    });
+
+    $('#report-table').dataTable({
+      "scrollX": true,
+      "scrollY": "200px",
+      "autoWidth": false,
+    })
+  
+
+    $('#filter').click(function () {
+      $('#filter-form').submit()
+    })
+
+    $('#clearDateBtn').click(function () {
+      $('#rep_date').val('');
+    });
+
+    $('#print').click(function () {
+      const h = $('head').clone()
+      const table = $('#report-table').clone()
+      const phead = $($('noscript#print-header').html()).clone()
+      const el = $('<div>')
+      el.append(h)
+      el.append(phead)
+      el.append(table)
+      const nw = window.open("", "_blank", "width=1000, height=900, left=0")
+      nw.document.write(el.html())
+      nw.document.close()
+      setTimeout(() => {
+        nw.print()
+        setTimeout(() => {
+          nw.close()
+        }, 300)
+      }, 300)
+    });
+
+  });
+</script>
+{% endblock extra_script %}

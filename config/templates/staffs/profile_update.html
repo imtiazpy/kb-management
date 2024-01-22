@@ -108,7 +108,7 @@
         const reader = new FileReader();
         reader.onload = function (e) {
           // Update the image source with the Data URL
-          $('#avatar-img').attr('src', e.target.result);
+          $('#avatar-img-upload').attr('src', e.target.result);
         };
         reader.readAsDataURL(file);
       }

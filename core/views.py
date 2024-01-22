@@ -34,6 +34,15 @@ class StockListView(LoginRequiredMixin, generic.ListView):
         context['category'] = self.kwargs.get('category', '')
         return context
 
+    def get_template_names(self):
+        category = self.kwargs.get('category', '')
+        if category == 'FISH':
+            return ['fisheries/fish_stock_list.html']
+        elif category == 'FRY':
+            return ['fisheries/fry_stock_list.html']
+        else:
+            return super().get_template_names()
+
 
 category_to_unit = {
     'FUEL': 'LITRE',
@@ -135,6 +144,15 @@ class SalesListView(LoginRequiredMixin, generic.ListView):
         else:
             return Sale.objects.filter(created_by=self.request.user, product__status=1, product__category=category)
 
+    def get_template_names(self):
+        category = self.kwargs.get('category', '')
+        if category == 'FISH':
+            return ['fisheries/fish_sale_list.html']
+        elif category == 'FRY':
+            return ['fisheries/fry_sale_list.html']
+        else:
+            return super().get_template_names()
+
 
 class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
 
@@ -142,10 +160,11 @@ class SalesCreateUpdateView(LoginRequiredMixin, generic.View):
         context = {}
         if pk is not None:
             context['sale'] = Sale.objects.get(id=pk)
-        context['products'] = Product.objects.filter(
-            status=1, category=category)
+        context['products'] = Product.objects.filter(status=1, category=category)
         context['customers'] = Customer.objects.all()
         context['user'] = request.user.id
+        context['category'] = category
+        context['unit'] = category_to_unit[category]
 
         return render(request, 'core/manage_sale.html', context)
 
@@ -187,25 +206,18 @@ class SalesDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = 'sale'
     pk_url_kwarg = 'pk'
 
-    def get_object(self, queryset=None):
-        category = self.kwargs.get('category', '')
-        sale = Sale.objects.filter(product__category=category).first()
 
-        if not sale:
-            raise Http404("Sale not found for the specified category")
-
-        return sale
         
 
 
 @login_required
-def sales_delete_view(request, pk=None, category=None):
+def sales_delete_view(request, pk=None):
     res = {'status': '', 'msg': ''}
     if pk is None:
         res['msg'] = "Invalid Sale ID"
 
     else:
-        sale_instance = get_object_or_404(Sale, pk=pk, product__category=category)
+        sale_instance = get_object_or_404(Sale, pk=pk)
         try:
             sale_instance.delete()
             res['status'] = 'success'
@@ -305,3 +317,12 @@ class SalesReportAdminView(LoginRequiredMixin, generic.ListView):
             queryset = queryset.filter(filters)
         
         return queryset
+    
+    def get_template_names(self):
+        category = self.kwargs.get('category', '')
+        if category == 'FISH':
+            return ['fisheries/fish_sale_report_admin.html']
+        elif category == 'FRY':
+            return ['fisheries/fry_sale_report_admin.html']
+        else:
+            return super().get_template_names()

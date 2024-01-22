@@ -48,12 +48,7 @@
       <div class="loader-rect"></div>
     </div>
   </div>
-  {% comment %} {% include "includes/management_header.html" %} {% endcomment %}
-  {% if 'fish-dash' in request.path %}
-    {% include "includes/fish_header.html" %}
-  {% elif 'fuel-dash' in request.path %}
-    {% include "includes/management_header.html" %}
-  {% endif %}
+  {% include "includes/fish_header.html" %}
 
   <div class="container my-3">
     {% if messages %}

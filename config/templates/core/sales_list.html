@@ -58,10 +58,10 @@ Sales
                       <a class="dropdown-item view-detail text-info" href="javascript:void(0)" data-url="{% url 'sale_detail' sale.pk %}">
                         <i class="fa-solid fa-circle-info"></i> View Detail
                       </a>
-                      <a class="dropdown-item edit-data text-success" href="javascript:void(0)" data-url="{% url 'manage_sale_edit' sale.pk %}">
+                      <a class="dropdown-item edit-data text-success" href="javascript:void(0)" data-url="{% url 'manage_sale_edit' pk=sale.pk category='FUEL' %}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
                       </a>
-                      <a class="dropdown-item delete-data text-danger" href="javascript:void(0)" data-url="{% url 'delete_sale' pk=sale.pk category='FUEL' %}">
+                      <a class="dropdown-item delete-data text-danger" href="javascript:void(0)" data-url="{% url 'delete_sale' sale.pk %}">
                         <i class="fa-solid fa-trash"></i> Delete
                       </a>
                     </div>

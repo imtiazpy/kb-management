@@ -78,7 +78,7 @@
     </div>
 
     <div class="form-group mb-3">
-      <label for="volume" class="control-label">Fuel Volume <small><em>(Liter)</em></small></label>
+      <label for="volume" class="control-label">{{category}} Volume <small><em>({{unit}})</em></small></label>
       <input step="any" min="0" type="number" id="volume" name="volume"
         value="{% if sale.volume %}{{sale.volume|floatformat:2|intcomma}}{% else %}0{% endif %}" required
         class="form-control form-control-sm rounded-0 text-end">
