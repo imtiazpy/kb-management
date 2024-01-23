@@ -22,25 +22,7 @@
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto" id="topNav">
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fuel_dashboard' %}">Dash-Home</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fuel_list' %}">Fuel Types</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fuel_stock' %}">Stock</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'inventory' category='FUEL' %}">Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'sales' %}">Sales</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% if request.user.is_staff %}{% url 'sales_report_admin' %}{% else %}{% url 'sales_report_page' %}{% endif %}">Salse Report</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'profile' %}">{{ request.user.username }}</a>
+                      <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'logout' %}">Logout</a>

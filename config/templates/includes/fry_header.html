@@ -24,26 +24,29 @@
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto" id="topNav">
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_dashboard' %}">Dash-Home</a>
+                      <a class="nav-link" href="{% url 'fry_dashboard' %}">Dash-Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'fry_list' %}">Fries</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_list' %}">Fishes</a>
+                      <a class="nav-link" href="{% url 'fry_stock' %}">Fry Stock</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_stock' %}">Fish Stock</a>
+                      <a class="nav-link" href="{% url 'fry_sales' %}">Fry Sales</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_sales' %}">Fish Sales</a>
+                      <a class="nav-link" href="{% if request.user.is_staff %}{% url 'fry_sales_report_admin' %}{% else %}{% url 'fry_sales_report_page' %}{% endif %}">Fry Salse Report</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% if request.user.is_staff %}{% url 'fish_sales_report_admin' %}{% else %}{% url 'fish_sales_report_page' %}{% endif %}">Fish Salse Report</a>
-                    </li>
+
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'management' %}">Management</a>
                     </li>
+
                     
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                      <a class="nav-link" href="{% url 'profile' %}">{{ request.user.username }}</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'logout' %}">Logout</a>

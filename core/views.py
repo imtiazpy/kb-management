@@ -19,6 +19,17 @@ from core.forms import SaveStockForm, SaveSaleForm, SaveCustomerForm
 USER = get_user_model()
 
 
+
+class ManagementView(LoginRequiredMixin, generic.View):
+
+    template_name = 'core/management.html'
+
+    def get(self, request):
+
+        return render(request, self.template_name)
+
+
+
 class StockListView(LoginRequiredMixin, generic.ListView):
     """Stock list view for all the product category"""
     model = Stock

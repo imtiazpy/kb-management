@@ -13,29 +13,45 @@ from core.forms import SaveProductForm
 class FisheriesDashboard(LoginRequiredMixin, generic.View):
     
     def get(self, request, *args, **kwargs):
-        fishes = Product.objects.filter(category='FISH', status=1)
-        fries = Product.objects.filter(category='FRY', status=1)
+        category = kwargs.get('category', '').upper()            
+
+        products = Product.objects.filter(category=category, status=1)
+
+        # fishes = Product.objects.filter(category='FISH', status=1)
+        # fries = Product.objects.filter(category='FRY', status=1)
 
         try:
-            fishes_total_sale = Sale.objects.filter(product__id__in=fishes).aggregate(Sum('total_amount'))['total_amount__sum']
-            fries_total_sale = Sale.objects.filter(product__id__in=fries).aggregate(Sum('total_amount'))['total_amount__sum']
+            products_total_sale = Sale.objects.filter(product__id__in=products)
             
+            # fishes_total_sale = Sale.objects.filter(product__id__in=fishes).aggregate(Sum('total_amount'))['total_amount__sum']
+            # fries_total_sale = Sale.objects.filter(product__id__in=fries).aggregate(Sum('total_amount'))['total_amount__sum']
+
+            if products_total_sale is None:
+                products_total_sale = 0
+            
+            """
             if fishes_total_sale is None:
                 fishes_total_sale = 0
             
             if fries_total_sale is None:
                 fries_total_sale = 0
+            """
         except:
-            fishes_total_sale = 0
-            fries_total_sale = 0
+            products_total_sale = 0
+            # fishes_total_sale = 0
+            # fries_total_sale = 0
         
         context = {
-            'total_fish_count': fishes.count(),
-            'total_fry_count': fries.count(),
-            'fishes': fishes,
-            'fries': fries,
-            'total_fish_sale': fishes_total_sale,
-            'total_fry_sale': fries_total_sale
+            'total_product_count': products.count(),
+            'products': products,
+            'total_product_sale': products_total_sale,
+            'category': category
+            # 'total_fish_count': fishes.count(),
+            # 'total_fry_count': fries.count(),
+            # 'fishes': fishes,
+            # 'fries': fries,
+            # 'total_fish_sale': fishes_total_sale,
+            # 'total_fry_sale': fries_total_sale
         }
 
         return render(request, 'fisheries/dashboard.html', context)

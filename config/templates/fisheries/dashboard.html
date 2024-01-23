@@ -3,7 +3,7 @@
 {% load humanize %}
 
 {% block title %}
-Fisheries Dashboard
+{{ category }} Dashboard
 {% endblock %}
 
 {% block content %}
@@ -18,30 +18,30 @@ Fisheries Dashboard
                 <i class="fs-1 text-primary fa-solid fa-th-list" style="font-size: 40px"></i>
               </div>
               <div class="col-9">
-                <h2 class="text-end">{{total_fish_count|intcomma}}</h2>
-                  <div class="text-end text-sm"><b>Total Fish</b></div>
+                <h2 class="text-end">{{total_product_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total {{ category }}</b></div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    {% for fish in fishes %}
+    {% for product in products %}
     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
       <div class=" card card-default rounded-0 shadow border border-gray">
         <div class="card-body">
           <div class="container-fluid">
             <div class="d-flex w-100 align-items-center">
               <div class="col-3">
-                {% if fish.image %}
-                <img src="{{ fish.image.url }}" alt="" class="img-fluid">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="" class="img-fluid">
                 {% else %}
                 <i class="fa-solid fa-fish-fins" style="font-size: 40px;"></i>
                 {% endif %}
               </div>
               <div class="col-9">
-                <h2 class="text-end">{{fish.available|intcomma}}</h2>
-                  <div class="text-end text-sm"><b>Available {{fish}} KG</b></div>
+                <h2 class="text-end">{{product.available|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Available {{product}} KG</b></div>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@ Fisheries Dashboard
                 <i class="fs-1 text-warning fa fa-coins" style="font-size: 40px"></i>
               </div>
               <div class="col-9">
-                <h2 class="text-end">{{total_fish_sale|floatformat:2|intcomma}}</h2>
+                <h2 class="text-end">{{total_product_sale|floatformat:2|intcomma}}</h2>
                   <div class="text-end text-sm"><b>Total Sale</b></div>
               </div>
             </div>
@@ -69,65 +69,5 @@ Fisheries Dashboard
   </div>
 </section>
 
-<section class="mt-5">
-  <div class="row justify-content-start">
-    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
-      <div class=" card card-default rounded-0 shadow border border-gray">
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="d-flex w-100 align-items-center">
-              <div class="col-3">
-                <i class="fs-1 text-primary fa-solid fa-th-list" style="font-size: 40px"></i>
-              </div>
-              <div class="col-9">
-                <h2 class="text-end">{{total_fry_count|intcomma}}</h2>
-                  <div class="text-end text-sm"><b>Total Fry</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% for fry in fries %}
-    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
-      <div class=" card card-default rounded-0 shadow border border-gray">
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="d-flex w-100 align-items-center">
-              <div class="col-3">
-                {% if fry.image %}
-                <img src="{{ fry.image.url }}" alt="" class="img-fluid">
-                {% else %}
-                <i class="fa-solid fa-fish" style="font-size: 40px;"></i>
-                {% endif %}
-              </div>
-              <div class="col-9">
-                <h2 class="text-end">{{fry.available|intcomma}}</h2>
-                  <div class="text-end text-sm"><b>Available {{fry}} KG</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
-      <div class=" card card-default rounded-0 shadow border border-gray">
-        <div class="card-body">
-          <div class="container-fluid">
-            <div class="d-flex w-100 align-items-center">
-              <div class="col-3">
-                <i class="fs-1 text-warning fa fa-coins" style="font-size: 40px"></i>
-              </div>
-              <div class="col-9">
-                <h2 class="text-end">{{total_fry_sale|floatformat:2|intcomma}}</h2>
-                  <div class="text-end text-sm"><b>Total Sale</b></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
 {% endblock content %}

@@ -3,12 +3,10 @@
   <div class="sticky-area">
     <div class="navigation">
       <div class="container">
-        <div class="row justify-content-center align-items-center">
+        <div class="row">
           <div class="col-lg-2">
-            <div class="logo d-flex justify-content-center align-items-center" style="width: 200px; height: 60px; overflow: hidden;">
-              <a class="navbar-brand" href="/">
-                  <img class="img-fluid" style="object-fit: cover; object-position: top top;" src="{% static 'img/kb-fisheries-logo.jpeg' %}" alt="Logo">
-              </a>
+            <div class="logo">
+              <a class="navbar-brand" href="/"><img src="{% static 'img/logo.png' %}" alt></a>
             </div>
           </div>
           <div class="col-lg-10">
@@ -24,24 +22,27 @@
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto" id="topNav">
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_dashboard' %}">Dash-Home</a>
+                      <a class="nav-link" href="{% url 'fuel_dashboard' %}">Dash-Home</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_list' %}">Fishes</a>
+                      <a class="nav-link" href="{% url 'fuel_list' %}">Fuel Types</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_stock' %}">Fish Stock</a>
+                      <a class="nav-link" href="{% url 'fuel_stock' %}">Stock</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'fish_sales' %}">Fish Sales</a>
+                      <a class="nav-link" href="{% url 'inventory' category='FUEL' %}">Inventory</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% if request.user.is_staff %}{% url 'fish_sales_report_admin' %}{% else %}{% url 'fish_sales_report_page' %}{% endif %}">Fish Salse Report</a>
+                      <a class="nav-link" href="{% url 'sales' %}">Sales</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% if request.user.is_staff %}{% url 'sales_report_admin' %}{% else %}{% url 'sales_report_page' %}{% endif %}">Salse Report</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'management' %}">Management</a>
                     </li>
-                    
+
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                     </li>
