@@ -77,7 +77,7 @@ Stocks
 <script>
   $(function () {
     $('#add-new').click(function () {
-      global_modal("Add New Stock", "{% url 'manage_stock' %}")
+      global_modal("Add New Stock", "{% url 'manage_fish_stock' %}")
     })
     $('.view-detail').click(function () {
       global_modal("View Stock Details", $(this).attr('data-url'))

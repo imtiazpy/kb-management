@@ -9,6 +9,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('staff/', include('staffs.urls')),
     path('fuel-dash/', include('fuel.urls')),
+    path('fisheries/', include('fisheries.urls')),
     path('core/', include('core.urls')),
 ]
 

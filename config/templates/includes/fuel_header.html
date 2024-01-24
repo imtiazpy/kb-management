@@ -1,28 +1,4 @@
 {% load static %}
-<div class="header-top">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="contact-info">
-          <a href="#" class="mr-3"><i class="fa-solid fa-envelope-open"></i> <span class="__cf_email__"
-              data-cfemail="b8d1d6ded7f8ddc0d9d5c8d4dd96dbd7d5">[email&#160;protected]</span> </a>
-          <a href="#"><i class="fa-solid fa-map-marker-alt"></i>Panchlaish Rd, Chittagong, Bangladesh</a>
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-12 col-sm-12 text-right">
-        <div class="site-info">
-          <div class="social-area">
-            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <header class="header-area">
   <div class="sticky-area">
     <div class="navigation">
@@ -44,27 +20,37 @@
                   <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-                  <ul class="navbar-nav ml-auto">
+                  <ul class="navbar-nav ml-auto" id="topNav">
                     <li class="nav-item">
-                      <a class="nav-link active" href="/">Home</a>
+                      <a class="nav-link" href="{% url 'fuel_dashboard' %}">Dash-Home</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'about' %}">About</a>
+                      <a class="nav-link" href="{% url 'fuel_list' %}">Fuel Types</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'services' %}">Services</a>
+                      <a class="nav-link" href="{% url 'fuel_stock' %}">Stock</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'teams' %}">Our Team</a>
+                      <a class="nav-link" href="{% url 'inventory' category='FUEL' %}">Inventory</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                      <a class="nav-link" href="{% url 'sales' %}">Sales</a>
                     </li>
-                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                      <a class="nav-link" href="{% url 'management' %}">Management</a>
+                      <a class="nav-link" href="{% if request.user.is_staff %}{% url 'sales_report_admin' %}{% else %}{% url 'sales_report_page' %}{% endif %}">Salse Report</a>
                     </li>
-                    {% endif %}
+
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Menu
+                      </a>
+
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'management' %}">Management</a>
+                        <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                      </div>
+                    </li>
                   </ul>
                 </div>
               </nav>

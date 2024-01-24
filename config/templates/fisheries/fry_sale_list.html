@@ -3,11 +3,11 @@
 {% load humanize %}
 
 {% block title %}
-Stocks
+Sales
 {% endblock %}
 
 {% block content %}
-<h3 class="fw-bolder">Stock Records</h3>
+<h3 class="fw-bolder">Sales Record</h3>
 <hr>
 <section class="py-3">
   <div class="container">
@@ -16,46 +16,52 @@ Stocks
         <div class="container-fluid">
           <div class="text-end mb-2" style="text-align: right">
             <button type="button" class="btn btn-success" id="add-new">
-              <i class="fa fa-plus"></i> Add New Stock
+              <i class="fa fa-plus"></i> Add New Sale
             </button>
           </div>
-          <table class="table table-stripped table-bordered" id="stock-table">
+          <table class="table table-stripped table-bordered" id="sale-table">
             <colgroup>
-              <col width="10%">
+              <col width="5%">
+              <col width="15%">
               <col width="20%">
-              <col width="30%">
               <col width="25%">
+              <col width="10%">
+              <col width="10%">
               <col width="15%">
             </colgroup>
             <thead>
               <tr class="bg-primary bg-gradient text-light">
                 <th class="text-center">#</th>
-                <th class="text-center">Date Added</th>
-                <th class="text-center">Product</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Customer</th>
+                <th class="text-center">Petrol</th>
                 <th class="text-center">Volume</th>
+                <th class="text-center">Amount</th>
                 <th class="text-center">Action</th>
               </tr>
             </thead>
             <tbody>
-              {% for stock in stocks %}
+              {% for sale in sales %}
               <tr>
                 <td class="text-center">{{forloop.counter}}</td>
-                <td class="">{{ stock.stock_in|date:"M d, Y" }}</td>
-                <td class="">{{stock.product}}</td>
-                <td class="text-end">{{ stock.volume|floatformat:2|intcomma }} {{stock.unit}}</td>
+                <td class="">{{ sale.sale_date|date:"M d, Y" }}</td>
+                <td class="">{{sale.customer}}</td>
+                <td class="">{{sale.product}}</td>
+                <td class="text-end">{{ sale.volume|floatformat:2|intcomma }} L</td>
+                <td class="text-end">{{ sale.total_amount|floatformat:2|intcomma }}</td>
                 <td class="text-center">
                   <div class="dropdown">
                     <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                       <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item view-detail text-info" href="javascript:void(0)" data-url="{% url 'stock_detail' stock.pk %}">
+                      <a class="dropdown-item view-detail text-info" href="javascript:void(0)" data-url="{% url 'sale_detail' sale.pk %}">
                         <i class="fa-solid fa-circle-info"></i> View Detail
                       </a>
-                      <a class="dropdown-item edit-data text-success" href="javascript:void(0)" data-url="{% url 'manage_stock_edit' stock.pk %}">
+                      <a class="dropdown-item edit-data text-success" href="javascript:void(0)" data-url="{% url 'fry_sale_edit' sale.pk %}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
                       </a>
-                      <a class="dropdown-item delete-data text-danger" href="javascript:void(0)" data-url="{% url 'delete_stock' stock.pk %}">
+                      <a class="dropdown-item delete-data text-danger" href="javascript:void(0)" data-url="{% url 'delete_sale' sale.pk %}">
                         <i class="fa-solid fa-trash"></i> Delete
                       </a>
                     </div>
@@ -70,31 +76,28 @@ Stocks
     </div>
   </div>
 </section>
-</div>
 {% endblock content %}
 
 {% block extra_script %}
 <script>
   $(function () {
     $('#add-new').click(function () {
-      global_modal("Add New Stock", "{% url 'manage_stock' %}")
+      global_modal("Add New Sale", "{% url 'manage_fry_sale' %}")
     })
     $('.view-detail').click(function () {
-      global_modal("View Stock Details", $(this).attr('data-url'))
+      global_modal("View Sale Details", $(this).attr('data-url'))
     })
     $('.edit-data').click(function () {
-      global_modal("Edit Stock Details", $(this).attr('data-url'))
+      global_modal("Edit Sale Details", $(this).attr('data-url'))
     })
     $('.delete-data').click(function () {
-      confirm_modal("Are you sure to delete this Stock?", $(this).attr('data-url'), delete_data)
+      confirm_modal("Are you sure to delete this Sale Type?",$(this).attr('data-url'),  delete_data)
     })
-    $('#stock-table').dataTable({
+    $('#sale-table').dataTable({
       "scrollX": true,
       "scrollY": "200px",
       "autoWidth": false,
     })
   })
-
-  
 </script>
 {% endblock extra_script %}
