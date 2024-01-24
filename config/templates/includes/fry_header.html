@@ -40,17 +40,18 @@
                       <a class="nav-link" href="{% if request.user.is_staff %}{% url 'fry_sales_report_admin' %}{% else %}{% url 'fry_sales_report_page' %}{% endif %}">Fry Salse Report</a>
                     </li>
 
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'management' %}">Management</a>
-                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Menu
+                      </a>
 
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'management' %}">Management</a>
+                        <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                      </div>
+                    </li>
                     
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'profile' %}">{{ request.user.username }}</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </li>
                   </ul>
                 </div>
               </nav>
