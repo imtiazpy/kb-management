@@ -166,7 +166,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-LOGIN_REDIRECT_URL = 'fuel_dashboard'
+LOGIN_REDIRECT_URL = 'management'
 LOGIN_URL = 'login'
 
 
