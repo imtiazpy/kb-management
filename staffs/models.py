@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 USER = get_user_model()
 
@@ -36,6 +37,12 @@ class Staff(models.Model):
         related_name='salary_staffs'
     )
     created_at = models.DateTimeField(auto_now=True)
+
+    def attendance(self):
+        is_attending = Attendance.objects.get(user=self.user, date__date=datetime.now().date())
+        if is_attending:
+            return True
+        return False
 
     def __str__(self):
         return f"{self.user.username}-designation: {self.designation}"
