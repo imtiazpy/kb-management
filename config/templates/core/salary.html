@@ -1,0 +1,22 @@
+{% extends "management_base.html" %}
+
+{% block content %}
+  <h2>Create Salary</h2>
+  <form method="post" action="{% url 'salary_create' %}">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="text-danger">
+            {% for error in field.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <button type="submit">Create Salary</button>
+  </form>
+{% endblock content %}

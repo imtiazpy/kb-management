@@ -1,0 +1,127 @@
+{% load static %}
+
+<style>
+  span.selection {
+    display: block;
+  }
+
+  span.select2-dropdown {
+    border: 1px solid #444;
+  }
+  
+  .select2-results>.select2-results__options {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<div class="container-fluid">
+  <form action="" id="staff-form">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{staff.id}}">
+    <input type="hidden" name="created_by" value="{{ user }}">
+    {% if not staff %}
+    <div class="form-group mb-3">
+      <label for="username" class="control-label">User Name</label>
+      <input type="text" id="username" name="username" value="{{ staff.user.username }}" required class="form-control form-control-sm rounded-0">
+    </div>
+    <div class="form-group mb-3">
+      <label for="password" class="control-label">Password</label>
+      <input type="password" id="password" name="password" value="{{ staff.user.password }}" required class="form-control form-control-sm rounded-0">
+    </div>
+    {% else %}
+    <input type="hidden" name="username" value="{{ staff.user.username }}" required>
+    <input type="hidden" name="password" value="{{ staff.user.password }}" required>
+    {% endif %}
+    <div class="form-group mb-3">
+      <label for="designation" class="control-label">Designation</label>
+      <select name="designation" id="designation" class="form-select form-select-sm rounded-0" required="required">
+        <option value="MANAGER" {% if staff.designation == 'MANAGER' %}selected{% endif %}>Manager</option>
+        <option value="SALESMAN" {% if staff.designation == 'SALESMAN' %}selected{% endif %}>Salesman</option>
+        <option value="FARMER" {% if staff.designation == 'FARMER' %}selected{% endif %}>Farmer</option>
+      </select>
+    </div>
+    <div class="form-group mb-3">
+      <label for="joining-date" class="control-label">Joining Date</label>
+      <input type="date" id="joining-date" name="joining_date" value="{{ staff.joining_date|date:'Y-m-d' }}" required class="form-control form-control-sm rounded-0">
+    </div>
+    <div class="form-group mb-3">
+      <label for="salary" class="control-label">Salary</label>
+      <select name="salary" id="salary" class="form-select form-select-sm rounded-0" required="required">
+        {% if not staff.salary %}
+        <option value="" disabled selected></option>
+        {% else %}
+        <option value="" disabled></option>
+        {% endif %}
+        {% for salary in salaries %}
+        {% if staff.salary.id == salary.id %}
+        <option value="{{salary.id}}" selected>{{salary.amount}}</option>
+        {% else %}
+        <option value="{{salary.id}}">{{salary.amount}}</option>
+        {% endif %}
+        {% endfor %}
+      </select>
+      <a href="{% url 'salary_page' %}">Create A Salary</a>
+    </div>
+  </form>
+</div>
+
+
+<script>
+  $(function () {
+    $('#salary').select2({
+      placeholder: "Please select here",
+      allowClear: true,
+      width: '100%',
+      dropdownParent: $('#global-modal')
+    });
+
+    $('#designation').select2({
+      placeholder: "Please select here",
+      allowClear: true,
+      width: '100%',
+      dropdownParent: $('#global-modal')
+    });
+
+    $('#staff-form').submit(function (e) {
+      e.preventDefault()
+      const _this = $(this)
+      const el = $('<div>')
+      el.addClass("alert alert-danger rounded-0 err-msg")
+      el.hide()
+      $('.err-msg').remove()
+      if (_this[0].checkValidity() == false) {
+        _this[0].reportValidity()
+        return false
+      }
+      $.ajax({
+        url: "{% url 'save_staff' %}",
+        method: 'POST',
+        data: _this.serialize(),
+        dataType: 'json',
+        error: err => {
+          el.text("An error occurred.")
+          _this.prepend(el)
+          el.show('slow')
+          $('html, body, modal').scrollTop(0)
+        },
+        success: function (resp) {
+          if (resp.status == 'success') {
+            location.reload()
+          } else if (!!resp.msg) {
+            el.html(resp.msg)
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          } else {
+            el.html("An error occurred.")
+            _this.prepend(el)
+            el.show('slow')
+            $('html, body, modal').scrollTop(0)
+          }
+        }
+      })
+    })
+  })
+  
+</script>

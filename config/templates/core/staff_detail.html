@@ -1,0 +1,27 @@
+{% load humanize %}
+<style>
+  #global-modal .modal-footer {
+    display: none;
+  }
+</style>
+<div class="container-fluid">
+  <dl>
+    <dt class="text-muted">Name</dt>
+    <dd class="ps-4">{{staff.user.name}}</dd>
+    <dt class="text-muted">Designation</dt>
+    <dd class="ps-4">{{staff.designation}}</dd>
+    <dt class="text-muted">Phone</dt>
+    <dd class="ps-4">{{staff.phone}}</dd>
+    <dt class="text-muted">NID</dt>
+    <dd class="ps-4">{{staff.nid}}</dd>
+    <dt class="text-muted">Address</dt>
+    <dd class="ps-4">{{staff.address}}</dd>
+    <dt class="text-muted">DOB</dt>
+    <dd class="ps-4">{{staff.dob}}</dd>
+    <dt class="text-muted">Salary</dt>
+    <dd class="ps-4">{{staff.salary}}</dd>
+    <dt class="text-muted">Joining Date</dt>
+    <dd class="ps-4">{{staff.joining_date|date:'Y-m-d'}}</dd>
+  </dl>
+  <div class="clear-fix mb-3"></div>
+</div>

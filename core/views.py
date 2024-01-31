@@ -13,8 +13,8 @@ from datetime import datetime
 
 
 from .models import Stock, Product, Sale, Customer
-from staffs.models import Staff, Attendance
-from core.forms import SaveStockForm, SaveSaleForm, SaveCustomerForm
+from staffs.models import Staff, Attendance, Salary
+from core.forms import SaveStockForm, SaveSaleForm, SaveCustomerForm, SaveSalaryForm, SaveStaffForm
 
 
 USER = get_user_model()
@@ -376,3 +376,95 @@ class StaffListView(LoginRequiredMixin, generic.ListView):
     template_name = "core/staff_list.html"
     context_object_name = "staffs"
     queryset = Staff.objects.all()
+
+
+
+@method_decorator(user_passes_test(is_staff_user, login_url=None), name='dispatch')
+class StaffCreateUpdateView(LoginRequiredMixin, generic.View):
+    template_name = "core/manage_staff.html"
+
+    def get(self, request, pk=None):
+        context = {}
+        if pk is not None:
+            context['staff'] = Staff.objects.get(id=pk)
+        context['salaries'] = Salary.objects.all()
+
+        if request.user.is_authenticated:
+            context['user'] = request.user.id
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        res = {'status': 'failed', 'msg': ''}
+
+        if request.method != 'POST':
+            res['msg'] = 'No data send on this request'
+        else:
+            post = request.POST
+            if post['id'] != '':
+                staff = Staff.objects.get(id=post['id'])
+                form = SaveStaffForm(request.POST, instance=staff)
+            else:
+                form = SaveStaffForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+                if post['id'] == '':
+                    messages.success(
+                        request, "Staff Record has been added successfully")
+                else:
+                    messages.success(
+                        request, "Staff Record has been updated successfully")
+                res['status'] = 'success'
+            else:
+                for field in form:
+                    for error in field.errors:
+                        if not res['msg'] == '':
+                            res['msg'] += str('<br />')
+                        res['msg'] += str(f"[{field.label}] {error}")
+        return JsonResponse(res)
+
+@method_decorator(user_passes_test(is_staff_user, login_url=None), name='dispatch')
+class StaffDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Staff
+    template_name = 'core/staff_detail.html'
+    context_object_name = 'staff'
+    pk_url_kwarg = 'pk'
+
+
+@user_passes_test(is_staff_user, login_url=None)
+@login_required
+def staff_delete_view(request, pk=None):
+    res = {'status': '', 'msg': ''}
+
+    if pk is None:
+        res['msg'] = "Invalid Staff ID"
+
+    else:
+        staff_instance = get_object_or_404(Staff, pk=pk)
+        user_instance = staff_instance.user
+        try:
+            staff_instance.delete()
+            user_instance.delete()
+            res['status'] = 'success'
+            messages.success(request, "Staff has been deleted successfully")
+        except Exception as e:
+            res['msg'] = f"Error deleting Staff: {str(e)}"
+
+    return JsonResponse(res)
+
+@method_decorator(user_passes_test(is_staff_user, login_url=None), name='dispatch')
+class SalaryCreatePageView(LoginRequiredMixin, generic.View):
+    template_name = 'core/salary.html'
+
+    def get(self, request):
+        form = SaveSalaryForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = SaveSalaryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('staffs')
+        else:
+            return render(request, self.template_name, {'form': form})
