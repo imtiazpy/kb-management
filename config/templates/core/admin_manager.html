@@ -1,0 +1,160 @@
+{% extends "management_base.html" %}
+
+{% load humanize %}
+
+{% block title %}
+Admin Manager
+{% endblock %}
+
+{% block content %}
+<section class="d-flex flex-column" style="gap: 30px;">
+  <div class="row justify-content-start">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2" onclick="window.location.href='{% url 'staffs' %}'" style="cursor: pointer;">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-primary fa-solid fa-user-tie" style="font-size: 40px;"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{staffs_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Staff</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-success fa-solid fa-user-check" style="font-size: 40px;"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{attending_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Attending Today</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="row justify-content-start">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-warning fa fa-gas-pump" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{fuel_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fuel</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-warning fa fa-coins" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{total_fuel_sale|floatformat:2|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fuel Sale</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row justify-content-start">
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-info fa-solid fa-fish-fins" style="font-size: 40px;"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{fishes_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fish</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-success fa-solid fa-fish" style="font-size: 40px;"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{fries_count|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fries</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-warning fa fa-coins" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{fishes_total_sale|floatformat:2|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fish Sale</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 p-2">
+      <div class=" card card-default rounded-0 shadow border border-gray">
+        <div class="card-body">
+          <div class="container-fluid">
+            <div class="d-flex w-100 align-items-center">
+              <div class="col-3">
+                <i class="fs-1 text-warning fa fa-coins" style="font-size: 40px"></i>
+              </div>
+              <div class="col-9">
+                <h2 class="text-end">{{fries_total_sale|floatformat:2|intcomma}}</h2>
+                  <div class="text-end text-sm"><b>Total Fries Sale</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock content %}

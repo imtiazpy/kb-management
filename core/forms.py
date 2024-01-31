@@ -1,6 +1,10 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from .models import Product, Stock, Sale, Customer
+from staffs.models import Salary, Staff
 
+
+USER = get_user_model()
 
 class SaveProductForm(forms.ModelForm):
 
@@ -84,3 +88,36 @@ class SaveCustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
         fields = "__all__"
+
+
+class SaveSalaryForm(forms.ModelForm):
+    class Meta:
+        model = Salary
+        fields = "__all__"
+
+
+class SaveStaffForm(forms.ModelForm):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)
+    designation = forms.CharField(max_length=20)
+    joining_date = forms.DateField()
+    salary = forms.ModelChoiceField(queryset=Salary.objects.all())
+
+    class Meta:
+        model = Staff
+        fields = ['username', 'password', 'designation', 'joining_date', 'salary']
+
+    
+    def save(self, commit=True):
+        user, created = USER.objects.get_or_create(username=self.cleaned_data['username'])
+        if created:
+            user.set_password(self.cleaned_data['password'])
+            user.save()
+        staff = super().save(commit=False)
+        staff.user = user
+        staff.designation = self.cleaned_data['designation']
+        staff.joining_date = self.cleaned_data['joining_date']
+        staff.salary = self.cleaned_data['salary']
+        if commit:
+            staff.save()
+        return staff
