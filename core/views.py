@@ -9,6 +9,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import datetime
+import calendar
+from calendar import HTMLCalendar
 
 
 
@@ -18,37 +20,6 @@ from core.forms import SaveStockForm, SaveSaleForm, SaveCustomerForm, SaveSalary
 
 
 USER = get_user_model()
-
-
-class AdminManagerView(LoginRequiredMixin, generic.View):
-    template_name = "core/admin_manager.html"
-
-    def get(self, request):
-        if request.user.is_staff:
-            staffs = Staff.objects.all()
-            attending_staffs = Attendance.objects.filter(date__date=datetime.now().date())
-            fuels = Product.objects.filter(category='FUEL', status=1)
-            total_fuel_sale = Sale.objects.filter(product__id__in=fuels).aggregate(
-                Sum('total_amount'))['total_amount__sum']
-            
-            fishes = Product.objects.filter(category='FISH', status=1)
-            fries = Product.objects.filter(category='FRY', status=1)
-            fishes_total_sale = Sale.objects.filter(product__id__in=fishes).aggregate(Sum('total_amount'))['total_amount__sum']
-            fries_total_sale = Sale.objects.filter(product__id__in=fries).aggregate(Sum('total_amount'))['total_amount__sum']
-
-            context = {
-                "staffs_count": staffs.count(),
-                "attending_count": attending_staffs.count(),
-                "fuel_count": fuels.count(),
-                "total_fuel_sale": total_fuel_sale,
-                "fishes_count": fishes.count(),
-                "fries_count": fries.count(),
-                "fishes_total_sale": fishes_total_sale,
-                "fries_total_sale": fries_total_sale
-            }
-            return render(request, self.template_name, context)
-        else:
-            return render(request, "404.html")
 
 
 class ManagementView(LoginRequiredMixin, generic.View):
@@ -312,8 +283,49 @@ class SalesReportView(LoginRequiredMixin, generic.View):
     
 
 
+# ===============================Admin specifics=================================
+
+
 def is_staff_user(user):
     return user.is_staff
+
+
+
+class AdminManagerView(LoginRequiredMixin, generic.View):
+    template_name = "core/admin_manager.html"
+
+    def get(self, request):
+        if request.user.is_staff:
+            staffs = Staff.objects.all()
+            attending_staffs = Attendance.objects.filter(date__date=datetime.now().date())
+            fuels = Product.objects.filter(category='FUEL', status=1)
+            total_fuel_sale = Sale.objects.filter(product__id__in=fuels).aggregate(
+                Sum('total_amount'))['total_amount__sum']
+            
+            fishes = Product.objects.filter(category='FISH', status=1)
+            fries = Product.objects.filter(category='FRY', status=1)
+            fishes_total_sale = Sale.objects.filter(product__id__in=fishes).aggregate(Sum('total_amount'))['total_amount__sum']
+            fries_total_sale = Sale.objects.filter(product__id__in=fries).aggregate(Sum('total_amount'))['total_amount__sum']
+
+            context = {
+                "staffs_count": staffs.count(),
+                "attending_count": attending_staffs.count(),
+                "fuel_count": fuels.count(),
+                "total_fuel_sale": total_fuel_sale,
+                "fishes_count": fishes.count(),
+                "fries_count": fries.count(),
+                "fishes_total_sale": fishes_total_sale,
+                "fries_total_sale": fries_total_sale
+            }
+            return render(request, self.template_name, context)
+        else:
+            return render(request, "404.html")
+
+
+@method_decorator(user_passes_test(is_staff_user, login_url=None), name='dispatch')
+class SalesGraphView(LoginRequiredMixin, generic.View):
+    def get(self, request):
+        pass
 
 
 @method_decorator(user_passes_test(is_staff_user, login_url=None), name='dispatch')
